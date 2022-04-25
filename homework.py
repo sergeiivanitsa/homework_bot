@@ -74,12 +74,13 @@ def check_response(response):
         raise exceptions.IndexError(f'Список {homework[0]} пуст')
     logging.info('Статус проверки проекта обновлён')
     return homework[0]
+    
 
 
 def parse_status(homework):
     """Извлекает статус домашней работы."""
     try:
-        homework_name = homework['homework_name']
+        homework_name = homework[0].get['homework_name']
     except Exception as error:
         raise exceptions.ParseStatusHomeworkName(
             f'Ошибка homework_name: {error}'
@@ -87,7 +88,7 @@ def parse_status(homework):
     if homework_name is None:
         homework_name = ''
     try:
-        homework_status = homework['status']
+        homework_status = homework.get('status')
     except Exception as error:
         raise exceptions.ParseStatusHomeworkStatus(f'Ошибка status: {error}')
     if homework_status in HOMEWORK_STATUSES:
