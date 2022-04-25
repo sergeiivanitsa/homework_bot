@@ -116,7 +116,7 @@ def send_message(bot, message):
 def main():
     """основная логика работы программы."""
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
-    current_timestamp = int(time.time()-30*24*60*60)
+    current_timestamp = int(time.time() - 30 * 24 * 60 * 60)
     status = ''
     check_tokens()
     while True:
