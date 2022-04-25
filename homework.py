@@ -70,7 +70,7 @@ def check_response(response):
     homework = response['homeworks']
     if not isinstance(homework, list):
         raise TypeError('Неверный тип данных')
-    if not isinstance(response['homeworks'], dict):
+    if not isinstance(response, dict):
         raise TypeError('Неверный тип данных')
     if not response['homeworks']:
         exceptions.KeyError(f'Не найден ключ homeworks: {response}')
