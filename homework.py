@@ -84,7 +84,7 @@ def check_response(response):
 def parse_status(homework):
     """Извлекает статус домашней работы."""
     try:
-        homework_name = homework['homework_name']
+        homework_name = homework.get('homework_name')
     except Exception as error:
         raise exceptions.ParseStatusHomeworkName(
             f'Ошибка homework_name: {error}'
@@ -92,7 +92,7 @@ def parse_status(homework):
     if homework_name is None:
         homework_name = ''
     try:
-        homework_status = homework['status']
+        homework_status = homework.get('status')
     except Exception as error:
         raise exceptions.ParseStatusHomeworkStatus(f'Ошибка status: {error}')
     if homework_status in HOMEWORK_STATUSES:
@@ -116,7 +116,7 @@ def send_message(bot, message):
 def main():
     """основная логика работы программы."""
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
-    current_timestamp = int(time.time())
+    current_timestamp = int(time.time()-30*24*60*60)
     status = ''
     check_tokens()
     while True:
