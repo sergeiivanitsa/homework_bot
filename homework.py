@@ -78,7 +78,7 @@ def check_response(response):
 
 def parse_status(homework):
     """Извлекает статус домашней работы."""
-    homework_name = check_response()['homework_name']
+    homework_name = homework[0]['homework_name']
     if homework_name is None:
         homework_name = ''
     try:
