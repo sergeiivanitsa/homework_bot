@@ -74,7 +74,6 @@ def check_response(response):
         raise exceptions.IndexError(f'Список {homework[0]} пуст')
     logging.info('Статус проверки проекта обновлён')
     return homework[0]
-    
 
 
 def parse_status(homework):
