@@ -70,7 +70,7 @@ def check_response(response):
     homework = response['homeworks']
     try:
         isinstance(response, dict)
-        isinstance(homework, list)
+        isinstance(response['homeworks'], list)
     except TypeError:
         raise
     if not response['homeworks']:
