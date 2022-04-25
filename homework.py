@@ -68,7 +68,8 @@ def get_api_answer(current_timestamp):
 def check_response(response):
     """Проверяет ответ API на корректность."""
     homework = response['homeworks']
-    if not isinstance(homework, dict):
+    homeworks = homework[0]
+    if not isinstance(homeworks, dict):
         raise TypeError('Неверный тип данных')
     if not isinstance(response['homeworks'], list):
         raise TypeError('Неверный тип данных')
