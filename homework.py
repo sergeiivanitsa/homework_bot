@@ -67,18 +67,20 @@ def get_api_answer(current_timestamp):
 
 def check_response(response):
     """Проверяет ответ API на корректность."""
+    homework = response['homeworks']
     try:
         isinstance(response, dict)
-        isinstance(response['homeworks'], list)
+        isinstance(homework, list)
     except TypeError:
         raise
     if not response['homeworks']:
         exceptions.KeyError(f'Не найден ключ homeworks: {response}')
-    homework = response['homeworks']
+    if not response['current_date']:
+        exceptions.KeyError(f'Не найден ключ current_date: {response}')
     if not homework:
         raise exceptions.IndexError(f'Список {homework[0]} пуст')
     logging.info('Статус проверки проекта обновлён')
-    return homework[0]
+    return homework
 
 
 def parse_status(homework):
