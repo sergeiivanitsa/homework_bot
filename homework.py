@@ -68,11 +68,10 @@ def get_api_answer(current_timestamp):
 def check_response(response):
     """Проверяет ответ API на корректность."""
     homework = response['homeworks']
-    try:
-        isinstance(response, dict)
-        isinstance(response['homeworks'], list)
-    except TypeError:
-        raise
+    if not isinstance(homework, dict):
+        raise TypeError('Неверный тип данных')
+    if not isinstance(response['homeworks'], list):
+        raise TypeError('Неверный тип данных')
     if not response['homeworks']:
         exceptions.KeyError(f'Не найден ключ homeworks: {response}')
     if not response['current_date']:
