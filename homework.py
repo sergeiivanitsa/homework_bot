@@ -78,9 +78,8 @@ def check_response(response):
 
 def parse_status(homework):
     """Извлекает статус домашней работы."""
-    homework_first = homework[0]
     try:
-        homework_name = homework_first.get('homework_name')
+        homework_name = homework.get('homework_name')
     except Exception as error:
         raise exceptions.ParseStatusHomeworkName(
             f'Ошибка homework_name: {error}'
