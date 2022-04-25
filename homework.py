@@ -67,6 +67,11 @@ def get_api_answer(current_timestamp):
 
 def check_response(response):
     """Проверяет ответ API на корректность."""
+    try:
+        isinstance(response, dict)
+        isinstance(response['homeworks'], list)
+    except TypeError:
+        raise
     if not response['homeworks']:
         exceptions.KeyError(f'Не найден ключ homeworks: {response}')
     homework = response['homeworks']
