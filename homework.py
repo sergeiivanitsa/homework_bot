@@ -93,9 +93,6 @@ def parse_status(homework):
     if homework_status not in HOMEWORK_STATUSES:
         message = f'Недокументированный статус: {homework_status}'
         raise exceptions.StatusHWException(message)
-    if homework != dict:
-        message = 'Неверный тип данных'
-        raise TypeError(message)
     verdict = HOMEWORK_STATUSES[homework_status]
     return f'Изменился статус проверки работы "{homework_name}". {verdict}'
 
