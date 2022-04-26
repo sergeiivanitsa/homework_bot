@@ -87,7 +87,7 @@ def parse_status(homework):
     if 'homework_name' and 'status' not in homework:
         message = 'Отсутствуют искомые ключи'
         raise KeyError(message)
-    else:        
+    else:    
         homework_name = homework['homework_name']
         homework_status = homework['status']
     if homework_status not in HOMEWORK_STATUSES:
