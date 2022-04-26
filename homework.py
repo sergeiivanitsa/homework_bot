@@ -84,25 +84,19 @@ def check_response(response):
 
 def parse_status(homework):
     """Извлекает статус домашней работы."""
-    try:
+    if 'homework_name' and 'status' not in homework:
+        message = 'Отсутствуют искомые ключи'
+        raise KeyError(message)
+    else:        
         homework_name = homework['homework_name']
-    except Exception as error:
-        raise exceptions.ParseStatusHomeworkName(
-            f'Ошибка homework_name: {error}'
-        )
-    if homework_name is None:
-        homework_name = ''
-    try:
         homework_status = homework['status']
-    except Exception as error:
-        raise exceptions.ParseStatusHomeworkStatus(f'Ошибка status: {error}')
-    if homework_status in HOMEWORK_STATUSES:
-        verdict = HOMEWORK_STATUSES[homework_status]
-    else:
-        raise exceptions.ParseStatusVerdict(
-            f'Неожиданный статус проекта: {homework_status}'
-        )
-
+    if homework_status not in HOMEWORK_STATUSES:
+        message = f'Недокументированный статус: {homework_status}'
+        raise exceptions.StatusHWException(message)
+    if homework != dict:
+        message = 'Неверный тип данных'
+        raise TypeError(message)
+    verdict = HOMEWORK_STATUSES[homework_status]
     return f'Изменился статус проверки работы "{homework_name}". {verdict}'
 
 
