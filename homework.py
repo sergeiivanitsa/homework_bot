@@ -85,14 +85,12 @@ def check_response(response):
 def parse_status(homework):
     """Извлекает статус домашней работы."""
     if 'homework_name' and 'status' not in homework:
-        message = 'Отсутствуют искомые ключи'
-        raise KeyError(message)
+        raise KeyError(f'Отсутствуют искомые ключи')
     else:
         homework_name = homework['homework_name']
         homework_status = homework['status']
     if homework_status not in HOMEWORK_STATUSES:
-        message = f'Недокументированный статус: {homework_status}'
-        raise exceptions.StatusHWException(message)
+        raise exceptions.StatusHWException(f'Недокументированный статус: {homework_status}')
     verdict = HOMEWORK_STATUSES[homework_status]
     return f'Изменился статус проверки работы "{homework_name}". {verdict}'
 
