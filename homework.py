@@ -77,7 +77,7 @@ def check_response(response):
 
 def parse_status(homework):
     """Извлекает статус домашней работы."""
-    if 'homework_name' and 'status' not in homework[0]:
+    if 'homework_name' and 'status' not in homework:
         raise KeyError('Отсутствуют искомые ключи')
     else:
         homework_name = homework[0].get('homework_name')
