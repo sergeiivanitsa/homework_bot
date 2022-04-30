@@ -15,3 +15,6 @@ class ParseStatusHomeworkStatus(Exception):
 
 class ParseStatusVerdict(Exception):
     pass
+
+class StatusHWException(Exception):
+    pass
