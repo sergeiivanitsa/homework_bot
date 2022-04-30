@@ -80,8 +80,8 @@ def parse_status(homework):
     if 'homework_name' and 'status' not in homework:
         raise KeyError('Отсутствуют искомые ключи')
     else:
-        homework_name = homework[0].get('homework_name')
-        homework_status = homework[0].get('status')
+        homework_name = homework.get('homework_name')
+        homework_status = homework.get('status')
     if homework_status not in HOMEWORK_STATUSES:
         raise exceptions.StatusHWException(
             f'Недокументированный статус: {homework_status}'
