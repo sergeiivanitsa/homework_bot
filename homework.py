@@ -1,5 +1,6 @@
 import logging
 import os
+import sys
 import time
 from http import HTTPStatus
 
@@ -21,19 +22,10 @@ logging.basicConfig(
     format='%(asctime)s %(levelname)s %(name)s %(message)s',
     level=logging.INFO)
 
-HOMEWORK_STATUSES = {
-    'approved': 'Работа проверена: ревьюеру всё понравилось. Ура!',
-    'reviewing': 'Работа взята на проверку ревьюером.',
-    'rejected': 'Работа проверена: у ревьюера есть замечания.'
-}
-
 
 def check_tokens():
     """Проверяет доступность переменных окружения."""
-    if not all([PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID]):
-        logging.critical("Переменные не обнаружены")
-        return False
-    return True
+    return all([PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID])
 
 
 def get_api_answer(current_timestamp):
@@ -60,13 +52,22 @@ def get_api_answer(current_timestamp):
 
 def check_response(response):
     """Проверяет ответ API на корректность."""
-    homework = response['homeworks']
+    try:
+        homework = response['homeworks']
+    except Exception as error:
+        logging.error(
+            f'Ошибка {error}'
+            f'Не найден ключ homeworks: {response}'
+        )
     if not isinstance(response, dict):
         raise TypeError('Неверный тип данных')
-    if not response['homeworks']:
-        exceptions.KeyError(f'Не найден ключ homeworks: {response}')
-    if not response['current_date']:
-        exceptions.KeyError(f'Не найден ключ current_date: {response}')
+    try:
+        response['current_date']
+    except Exception as error:
+        logging.error(
+            f'Ошибка {error}'
+            f'Не найден ключ homeworks: {response}'
+        )
     if not isinstance(homework, list):
         raise TypeError('Неверный тип данных')
     if not homework:
@@ -82,11 +83,11 @@ def parse_status(homework):
     else:
         homework_name = homework['homework_name']
         homework_status = homework['status']
-    if homework_status not in HOMEWORK_STATUSES:
+    if homework_status not in settings.HOMEWORK_STATUSES:
         raise exceptions.StatusHWException(
             f'Недокументированный статус: {homework_status}'
         )
-    verdict = HOMEWORK_STATUSES[homework_status]
+    verdict = settings.HOMEWORK_STATUSES[homework_status]
     return f'Изменился статус проверки работы "{homework_name}". {verdict}'
 
 
@@ -100,9 +101,11 @@ def send_message(bot, message):
 
 def main():
     """основная логика работы программы."""
-    check_tokens()
+    if check_tokens():
+        logging.critical("Переменные не обнаружены")
+        sys.exit()
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
-    current_timestamp = int(time.time() - 30 * 24 * 60 * 60)
+    current_timestamp = int(time.time() - settings.PERIOD)
     status = ''
     while True:
         try:
@@ -119,7 +122,6 @@ def main():
                     send_message(bot, message)
                     status = message
             current_timestamp = current_timestamp
-            time.sleep(settings.RETRY_TIME)
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
         finally:
