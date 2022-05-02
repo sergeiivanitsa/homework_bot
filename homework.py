@@ -52,22 +52,13 @@ def get_api_answer(current_timestamp):
 
 def check_response(response):
     """Проверяет ответ API на корректность."""
-    try:
-        homework = response['homeworks']
-    except Exception as error:
-        logging.error(
-            f'Ошибка {error}'
-            f'Не найден ключ homeworks: {response}'
-        )
+    homework = response['homeworks']
+    if 'homeworks' not in response:
+        raise KeyError('Не найден ключ homeworks')
     if not isinstance(response, dict):
         raise TypeError('Неверный тип данных')
-    try:
-        response['current_date']
-    except Exception as error:
-        logging.error(
-            f'Ошибка {error}'
-            f'Не найден ключ homeworks: {response}'
-        )
+    if 'current_date' not in response:
+        raise KeyError('Не найден ключ current_date')
     if not isinstance(homework, list):
         raise TypeError('Неверный тип данных')
     if not homework:
@@ -121,7 +112,6 @@ def main():
                 if message != status:
                     send_message(bot, message)
                     status = message
-            current_timestamp = current_timestamp
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
         finally:
