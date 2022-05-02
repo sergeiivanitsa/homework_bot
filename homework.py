@@ -52,13 +52,13 @@ def get_api_answer(current_timestamp):
 
 def check_response(response):
     """Проверяет ответ API на корректность."""
-    homework = response['homeworks']
     if 'homeworks' not in response:
         raise KeyError('Не найден ключ homeworks')
     if not isinstance(response, dict):
         raise TypeError('Неверный тип данных')
     if 'current_date' not in response:
         raise KeyError('Не найден ключ current_date')
+    homework = response['homeworks']
     if not isinstance(homework, list):
         raise TypeError('Неверный тип данных')
     if not homework:
