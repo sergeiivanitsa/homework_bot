@@ -57,7 +57,7 @@ def check_response(response):
     if 'homeworks' not in response:
         raise KeyError('Не найден ключ homeworks')
     if 'current_date' not in response:
-        raise KeyError('Не найден ключ current_date') 
+        raise KeyError('Не найден ключ current_date')
     homework = response['homeworks']
     if not isinstance(homework, list):
         raise TypeError('Неверный тип данных')
